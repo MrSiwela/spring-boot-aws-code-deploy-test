@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <title>Dashboard</title>
+</head>
+<body>
+
+    <div class="container">
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="#">
+                        <span class="icon"><ion-icon name="ellipse-outline"></ion-icon></span>
+                        <span class="title">Ask Jabu</span>
+                    </a>
+                </li>
+                <li class="current-page">
+                    <a th:href="@{/dashboard}">
+                        <span class="icon"><ion-icon name="speedometer-outline"></ion-icon></span>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/orders}">
+                        <span class="icon"><ion-icon name="calculator-outline"></ion-icon></span>
+                        <span class="title">Orders</span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/inventory}">
+                        <span class="icon"><ion-icon name="clipboard-outline"></ion-icon></span>
+                        <span class="title">Inventory</span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/settings}">
+                        <span class="icon"><ion-icon name="settings-outline"></ion-icon></span>
+                        <span class="title">Settings</span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/logout}">
+                        <span class="icon"><ion-icon name="log-out-outline"></ion-icon></span>
+                        <span class="title">Sign Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="main">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="toggle">
+                    <ion-icon name="menu"></ion-icon>
+                </div>
+                <div class="search">
+                    <label for="">
+                        <input type="search" placeholder="Search"/>
+                        <ion-icon name="search-outline"></ion-icon>
+                    </label>
+                </div>
+                <div class="user">
+                    <h2>Example User</h2>
+                    <small>normal User</small>
+                </div>
+            </div>
+            <!-- Cards section -->
+            <div class="cards">
+                <div class="card">
+                    <div>
+                        <div class="stats">65</div>
+                        <div class="card-name">Customers</div>
+                    </div>
+                    <div class="icon">
+                        <ion-icon name="people-outline"></ion-icon>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <div class="stats">65</div>
+                        <div class="card-name">Orders</div>
+                    </div>
+                    <div class="icon">
+                        <ion-icon name="calculator-outline"></ion-icon>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <div class="stats">65</div>
+                        <div class="card-name">Delivered</div>
+                    </div>
+                    <div class="icon">
+                        <ion-icon name="bicycle-outline"></ion-icon>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Summarized Details -->
+            <div class="details">
+                <!-- Order Details -->
+                <div class="recent-orders">
+                    <div class="orders-hearder">
+                        <h2>Recent Orders</h2>
+                        <a th:href="@{/orders}" class="btn">View All</a>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Order #</td>
+                                <td>Order Date</td>
+                                <td>Delivery satus</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ORD1234</td>
+                                <td>20-October-21</td>
+                                <td><span class="status delivered">Delivered</span></td>
+                            </tr>
+                            <tr>
+                                <td>ORD1234</td>
+                                <td>20-October-21</td>
+                                <td><span class="status in-transit">In Transit</span></td>
+                            </tr>
+                            <tr>
+                                <td>ORD1234</td>
+                                <td>20-October-21</td>
+                                <td><span class="status packaging">packaging</span></td>
+                            </tr>
+                            <tr>
+                                <td>ORD1234</td>
+                                <td>20-October-21</td>
+                                <td><span class="status delivered">Delivered</span></td>
+                            </tr>
+                            <tr>
+                                <td>ORD1234</td>
+                                <td>20-October-21</td>
+                                <td><span class="status return">Return</span></td>
+                            </tr>
+                            <tr>
+                                <td>ORD1234</td>
+                                <td>20-October-21</td>
+                                <td><span class="status packaging">packaging</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- New Customers -->
+                <div class="recent-customers">
+                    <div class="customers-hearder">
+                        <h2>Recent Customers</h2>
+                    </div>
+                    <table>
+                        <tr>
+                            <td><span class="customer-image"><ion-icon name="person-outline"></ion-icon></span></td>
+                            <td><h2>Username</h2><br><span>Soweto</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="customer-image"><ion-icon name="person-outline"></ion-icon></span></td>
+                            <td><h2>Username</h2><br><span>Soweto</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="customer-image"><ion-icon name="person-outline"></ion-icon></span></td>
+                            <td><h2>Username</h2><br><span>Soweto</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="customer-image"><ion-icon name="person-outline"></ion-icon></span></td>
+                            <td><h2>Username</h2><br><span>Soweto</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="customer-image"><ion-icon name="person-outline"></ion-icon></span></td>
+                            <td><h2>Username</h2><br><span>Soweto</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+<!--        <div th:insert="index"></div>-->
+
+    </div>
+    
+
+    <script>
+
+        //Menu Toggle
+        let toggle = document.querySelector('.toggle');
+        let navigation = document.querySelector('.navigation');
+        let main = document.querySelector('.main');
+
+        toggle.onclick = function(){
+            navigation.classList.toggle('active');
+            main.classList.toggle('active');
+        }
+        //Add hover class to selected list item
+        let navList = document.querySelectorAll('.navigation li');
+
+        function activeLink(){
+            navList.forEach((item)=>{
+                item.classList.remove('hovered');
+                this.classList.add('hovered');
+            });
+        }
+
+        navList.forEach((item)=>
+        item.addEventListener('onclick',activeLink));
+
+
+        const current = 0;
+        for (var i = 0; i < document.links.length; i++) {
+            if (document.links[i].href === document.URL) {
+                current = i;
+            }
+        }
+        document.links[current].className = 'current-page';
+
+    </script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

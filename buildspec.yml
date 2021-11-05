@@ -15,6 +15,6 @@ phases:
       - mvn package
 artifacts:
   files:
-    - target/askjabu-0.0.1-SNAPSHOT.jar
+    - askjabu/target/askjabu-0.0.1-SNAPSHOT.jar
     - appspec.yml
   discard-paths: yes

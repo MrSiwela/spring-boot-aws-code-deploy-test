@@ -26,6 +26,12 @@
                     </a>
                 </li>
                 <li>
+                    <a th:href="@{/vendors}">
+                        <span class="icon"><ion-icon name="calculator-outline"></ion-icon></span>
+                        <span class="title">Vendors</span>
+                    </a>
+                </li>
+                <li>
                     <a th:href="@{/orders}">
                         <span class="icon"><ion-icon name="calculator-outline"></ion-icon></span>
                         <span class="title">Orders</span>
@@ -35,6 +41,12 @@
                     <a th:href="@{/inventory}">
                         <span class="icon"><ion-icon name="clipboard-outline"></ion-icon></span>
                         <span class="title">Inventory</span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/categories}">
+                        <span class="icon"><ion-icon name="clipboard-outline"></ion-icon></span>
+                        <span class="title">Categories</span>
                     </a>
                 </li>
                 <li>
@@ -118,36 +130,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>ORD1234</td>
-                                <td>20-October-21</td>
-                                <td><span class="status delivered">Delivered</span></td>
-                            </tr>
-                            <tr>
-                                <td>ORD1234</td>
-                                <td>20-October-21</td>
-                                <td><span class="status in-transit">In Transit</span></td>
-                            </tr>
-                            <tr>
-                                <td>ORD1234</td>
-                                <td>20-October-21</td>
-                                <td><span class="status packaging">packaging</span></td>
-                            </tr>
-                            <tr>
-                                <td>ORD1234</td>
-                                <td>20-October-21</td>
-                                <td><span class="status delivered">Delivered</span></td>
-                            </tr>
-                            <tr>
-                                <td>ORD1234</td>
-                                <td>20-October-21</td>
-                                <td><span class="status return">Return</span></td>
-                            </tr>
-                            <tr>
-                                <td>ORD1234</td>
-                                <td>20-October-21</td>
-                                <td><span class="status packaging">packaging</span></td>
-                            </tr>
+                            <th:block th:each="order : ${orderList}">
+                                <tr>
+                                    <td>[[${order.id}]]</td>
+                                    <td>[[${order.orderDate}]]</td>
+                                    <td><span class="status" th:classappend="${order.deliveryStatus}">[[${order.deliveryStatus}]]</span></td>
+                                </tr>
+                            </th:block>
                         </tbody>
                     </table>
                 </div>

@@ -25,6 +25,12 @@
             </a>
         </li>
             <li>
+                <a th:href="@{/vendors}">
+                    <span class="icon"><ion-icon name="calculator-outline"></ion-icon></span>
+                    <span class="title">Vendors</span>
+                </a>
+            </li>
+            <li>
                 <a th:href="@{/orders}">
                     <span class="icon"><ion-icon name="calculator-outline"></ion-icon></span>
                     <span class="title">Orders</span>
@@ -34,6 +40,12 @@
                 <a th:href="@{/inventory}">
                     <span class="icon"><ion-icon name="clipboard-outline"></ion-icon></span>
                     <span class="title">Inventory</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/categories}">
+                    <span class="icon"><ion-icon name="clipboard-outline"></ion-icon></span>
+                    <span class="title">Categories</span>
                 </a>
             </li>
             <li>
@@ -88,17 +100,21 @@
                             <label for="description">Product Description:</label>
                             <textarea th:field="*{productDescription}" id="description" name="description" required minlength="2" maxlength="200"></textarea>
                         </li>
-                        <!--                    <li>-->
-                        <!--                        <label for="sizes">Sizes:</label>-->
-                        <!--                        <input type="text" id="sizes" name="sizes">-->
-                        <!--                    </li>-->
-                        <!--                    <li>-->
-                        <!--                        <label for="colors">Colors:</label>-->
-                        <!--                        <input type="text" id="colors" name="colors">-->
-                        <!--                    </li>-->
+                        <li>
+                            <label for="price">Price Per Unit:</label>
+                            <input type="text" th:field="*{price}" id="price" name="price" required maxlength="6"></input>
+                        </li>
+                        <li>
+                            <label>Category:</label>
+                            <select th:field="*{category}" required>
+                                <th:block th:each="category : ${categoryList}">
+                                    <option th:text="${category.categoryName}" th:value="${category.id}"></option>
+                                </th:block>
+                            </select>
+                        </li>
                         <li class="form-btn">
                             <button type="submit">Save Changes</button>
-                            <button class="cancel-btn" onclick="window.location.href='/inventory'">Delete</button>
+                            <a class="cancel-btn btn" th:href="@{'/inventory/delete/'+${product.id}}">Delete</a>
                         </li>
                     </ul>
                 </form>

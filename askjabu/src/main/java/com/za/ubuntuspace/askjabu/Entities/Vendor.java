@@ -1,6 +1,7 @@
 package com.za.ubuntuspace.askjabu.Entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Vendor {

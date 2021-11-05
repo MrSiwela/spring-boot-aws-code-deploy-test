@@ -21,6 +21,10 @@ public class User {
     @Column(name = "enabled")
     private boolean enabled;
 
+    @ManyToOne
+    @JoinColumn(name = "vendor_id")
+    private Vendor vendor;
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
@@ -32,13 +36,14 @@ public class User {
     public User() {
     }
 
-    public User(Long userId, String email, String fullName, String password, boolean enabled, Set<Role> roles) {
+    public User(Long userId, String email, String fullName, String password, boolean enabled, Set<Role> roles, Vendor vendor) {
         this.userId = userId;
         this.email = email;
         this.fullName = fullName;
         this.password = password;
         this.enabled = enabled;
         this.roles = roles;
+        this.vendor = vendor;
     }
 
     public Long getUserId() {
@@ -87,5 +92,13 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
     }
 }

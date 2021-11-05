@@ -26,9 +26,10 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public String deleteProduct(int id){
-        productRepository.deleteById(id);
-        return "Product Deleted";
+    public Product deleteProduct(int id){
+        Product deleteProduct = productRepository.findById(id).get();
+        productRepository.delete(deleteProduct);
+        return deleteProduct;
     }
 
 }

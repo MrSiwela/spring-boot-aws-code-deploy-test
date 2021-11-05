@@ -12,14 +12,27 @@ public class Product {
     private String productName;
     @Column( nullable = false, length = 200)
     private String productDescription;
+    @Column( nullable = false)
+    private float price;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "vendor_id")
+    private Vendor vendor;
 
     public Product() {
     }
 
-    public Product(int id, String productName, String productDescription) {
+    public Product(int id, String productName, String productDescription, float price, Category category, Vendor vendor) {
         this.id = id;
         this.productName = productName;
         this.productDescription = productDescription;
+        this.price = price;
+        this.category = category;
+        this.vendor = vendor;
     }
 
     public int getId() {
@@ -46,12 +59,38 @@ public class Product {
         this.productDescription = productDescription;
     }
 
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
                 "id=" + id +
                 ", productName='" + productName + '\'' +
                 ", productDescription='" + productDescription + '\'' +
+                ", price=" + price +
+                ", category=" + category +
                 '}';
     }
 }

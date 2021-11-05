@@ -1,8 +1,12 @@
 package com.za.ubuntuspace.askjabu.Controllers;
 
+import com.za.ubuntuspace.askjabu.Entities.Category;
+import com.za.ubuntuspace.askjabu.Entities.Order;
 import com.za.ubuntuspace.askjabu.Entities.Product;
 import com.za.ubuntuspace.askjabu.Entities.Vendor;
 import com.za.ubuntuspace.askjabu.Repositories.ProductRepository;
+import com.za.ubuntuspace.askjabu.Services.CategoryService;
+import com.za.ubuntuspace.askjabu.Services.OrderService;
 import com.za.ubuntuspace.askjabu.Services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -26,10 +30,18 @@ public class ProductController {
     @Autowired
     private ProductRepository repository;
 
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private OrderService orderService;
+
     @GetMapping("/dashboard")
     public String dashboard(Model model){
         List<Product> products = productService.getAllProdcuts();
+        List<Order> orders = orderService.getAllOrders();
         model.addAttribute("productList",products);
+        model.addAttribute("orderList",orders);
         return "dashboard";
     }
 
@@ -44,7 +56,9 @@ public class ProductController {
 
     @GetMapping("/inventory/new")
     public String addNewProduct(Model model){
+        List<Category> categoryList = categoryService.getAllCategories();
         model.addAttribute("product",new Product());
+        model.addAttribute("categoryList",categoryList);
         return "addProduct";
     }
 
@@ -67,12 +81,22 @@ public class ProductController {
     public String editProduct(@PathVariable("id") int id,Model model, RedirectAttributes ra){
         try{
             Product editProduct = productService.getProductById(id);
+            List<Category> categoryList = categoryService.getAllCategories();
             model.addAttribute("product",editProduct);
+            model.addAttribute("categoryList",categoryList);
             return "editProduct";
         }catch(Exception e){
             ra.addFlashAttribute("message",e.getMessage());
             return "redirect:/inventory";
         }
+    }
+
+    @GetMapping("/inventory/delete/{id}")
+    public String removeProduct(@PathVariable("id") int id,Model model){
+            Product deleteProduct = productService.deleteProduct(id);
+            model.addAttribute("product",deleteProduct);
+            return "redirect:/inventory";
+
     }
 
     @GetMapping("/settings")

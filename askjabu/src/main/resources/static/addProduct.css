@@ -550,7 +550,16 @@ button{
     color: ghostwhite;
     border-radius: 5px;
 }
-
+.btn {
+    position: absolute;
+    min-width: 80px;
+    height: 40px;
+    padding: 10px 15px;
+    background: var(--main-color);
+    color: ghostwhite;
+    border-radius: 5px;
+    margin-left: 5px;
+}
 .pagination{
     width: 100%;
     height: 60px;

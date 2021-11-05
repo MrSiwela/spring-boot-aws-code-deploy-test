@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-        <html lang="en" xmlns:th="http://www.thymeleaf.org">
-        <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-        <link rel="stylesheet" th:href="@{/addProduct.css}">
-        <title>Order Details</title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link rel="stylesheet" th:href="@{/inventory.css}">
+    <title>Inventory</title>
 </head>
 <body>
 
@@ -18,12 +18,13 @@
                     <span class="icon"><ion-icon name="ellipse-outline"></ion-icon></span>
                     <span class="title">Ask Jabu</span>
                 </a>
-            </li>                <li>
-            <a th:href="@{/dashboard}">
-                <span class="icon"><ion-icon name="speedometer-outline"></ion-icon></span>
-                <span class="title">Dashboard</span>
-            </a>
-        </li>
+            </li>
+            <li>
+                <a th:href="@{/dashboard}">
+                    <span class="icon"><ion-icon name="speedometer-outline"></ion-icon></span>
+                    <span class="title">Dashboard</span>
+                </a>
+            </li>
             <li>
                 <a th:href="@{/vendors}">
                     <span class="icon"><ion-icon name="calculator-outline"></ion-icon></span>
@@ -80,34 +81,54 @@
                 <small>normal User</small>
             </div>
         </div>
-        <!-- Cards section -->
+
         <!-- Summarized Details -->
         <div class="details">
             <!-- Order Details -->
             <div class="recent-orders">
                 <div class="orders-hearder">
-                    <h2>Order [[${order.id}]]</h2>
+                    <h2>Vendors</h2>
+                    <button id="newProductBtn" class="btn" onclick="window.location.href='/vendors/new'">Add New</button>
                 </div>
-
-                <form th:action="@{/orders/edit}" th:object="${order}" method="post">
-                    <input type="hidden" th:field="*{id}"/>
-                    <ul>
-                        <li>
-                            <label for="order_date">Product Name:</label>
-                            <input type="text"  th:field="*{orderDate}" id="order_date" name="order_date" required minlength="2" maxlength="45">
-                        </li>
-                        <li>
-                            <label for="oder_status">Product Description:</label>
-                            <input type="text" th:field="*{deliveryStatus}" id="oder_status" name="oder_status" required minlength="2" maxlength="200"></input>
-                        </li>
-                        <li class="form-btn">
-                            <button type="submit">Save Changes</button>
-                        </li>
-                    </ul>
-                </form>
+                <table>
+                    <thead>
+                    <tr>
+                        <td>Vendor ID #</td>
+                        <td>Vendor Name</td>
+                        <td>Operating Hours</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <th:block th:each="vendor : ${vendorList}">
+                            <tr>
+                                <td>[[${vendor.id}]]</td>
+                                <td>[[${vendor.vendorName}]]</td>
+                                <td>[[${vendor.operatingHours}]]</td>
+                                <td>
+<!--                                    <button class="edit-btn"><ion-icon name="pencil-outline"></ion-icon></button>-->
+<!--                                    <button class="delete-btn"><ion-icon name="trash-outline"></ion-icon></button>-->
+                                    <a id="edit-btn" class="edit-btn" th:href="@{'/vendors/edit/'+ ${vendor.id}}" ><ion-icon name="pencil-outline"></ion-icon>View</a>
+                                </td>
+                            </tr>
+                        </th:block>
+                    </tbody>
+                </table>
             </div>
         </div>
+
+<!--        <div class="pagination">-->
+<!--            <ul>-->
+<!--                <li th:each="pageNum : ${#numbers.sequence(0,productList.totalPages-1)}">-->
+<!--                    <a th:href="@{/inventory/(page=${pageNum})}" th:text="${pageNum}"></a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+
     </div>
+
+    <!--        <div th:insert="index"></div>-->
+
+
 </div>
 
 
@@ -136,12 +157,8 @@
         item.addEventListener('onclick',activeLink));
 
     </script>
+<script th:src="@{/inventory.js}"></script>
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-</body>
-</html></title>
-</head>
-<body>
-
 </body>
 </html>

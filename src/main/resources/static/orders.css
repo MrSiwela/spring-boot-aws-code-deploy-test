@@ -420,3 +420,122 @@ body{
     font-size: 4rem;
 }
 
+@media screen and (max-width:900px)
+{
+
+    .navigation{
+        left: - 280px;
+    }
+
+    .navigation.active{
+        width: 280px;
+        left: 0px;
+    }
+
+    .main{
+        width: 100%;
+        left: 0;
+    }
+
+    .main.active{
+        left: 280px;
+        width: calc(100% - 280px);
+    }
+
+    .user h2 {
+        font-size: 0.9rem;
+        line-height: 10px;
+    }
+
+    .cards{
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .cards .card .stats{
+        font-size: 3rem;
+    }
+
+    .cards .card .card-name{
+        font-size: 1.3rem;
+    }
+
+    .cards .card .icon{
+        font-size: 4rem;
+    }
+
+    .details{
+       grid-template-columns: repeat(1,1fr);
+    }
+
+    .details .recent-customers{
+        width: 100%;
+    }
+
+}
+
+@media screen and (max-width:800px){
+
+    .details{
+        overflow-x: auto;
+    }
+
+    .status{
+        white-space: nowrap;
+    }
+
+}
+
+@media screen and (max-width:480px){
+
+    .search{
+        display: none
+    }
+
+    .cards{
+        grid-template-columns: repeat(1,1fr);
+    }
+
+    .orders-hearder h2 {
+        font-size: 1.3rem;
+    }
+
+    .customers-hearder h2 {
+        font-size: 1.3rem;
+    }
+
+    .details table thead td {
+        font-size: 0.8rem;
+        white-space: nowrap;
+    }
+
+    .details .recent-orders table tbody tr {
+        white-space: nowrap;
+    }
+
+    .navigation{
+        width: 100%;
+        left: -100%;
+        z-index: 100;
+    }
+
+    .navigation.active{
+        width: 100%;
+        left:0;
+    }
+
+    .toggle{
+        z-index: 101;
+    }
+
+    .main.active .toggle{
+        color: ghostwhite;
+        position: fixed;
+        right: 0;
+        left: initial;
+    }
+
+
+    .edit-btn ion-icon, .delete-btn ion-icon{
+        display: none;
+     }
+}

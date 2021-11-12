@@ -1,5 +1,6 @@
 package com.za.ubuntuspace.askjabu.Controllers;
 
+import com.za.ubuntuspace.askjabu.Configs.FileUploadUtil;
 import com.za.ubuntuspace.askjabu.Entities.Category;
 import com.za.ubuntuspace.askjabu.Entities.Order;
 import com.za.ubuntuspace.askjabu.Entities.Product;
@@ -14,11 +15,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 @Controller
@@ -63,8 +72,46 @@ public class ProductController {
     }
 
     @PostMapping("/inventory/save")
-    public String saveProduct(Product product, RedirectAttributes ra){
+    public String saveProduct(Product product, @RequestParam("image")MultipartFile[] multipartFiles, RedirectAttributes ra) throws IOException {
+
+//        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+//        product.setFirstImage(fileName);
+//
+//        Product savedProduct = productService.saveProduct(product);
+//
+//        String uploadDir = "./uploads/inventory/"+ savedProduct.getId();
+//        Path uploadPath = Paths.get(uploadDir);
+//        if(!Files.exists(uploadPath)){
+//            Files.createDirectories(uploadPath);
+//        }
+//        InputStream inputStream = file.getInputStream();
+//        Path filePath = uploadPath.resolve(fileName);
+//        Files.copy(inputStream,filePath,StandardCopyOption.REPLACE_EXISTING);
+//        ra.addFlashAttribute("message","Product Was Added Successfully.");
+//        return "redirect:/inventory";
+
+        int count = 0;
+        for( MultipartFile file: multipartFiles){
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            if(count == 0){ product.setFirstImage(fileName);}
+            if(count == 1){ product.setSecondImage(fileName);}
+            if(count == 2){ product.setThirdImage(fileName);}
+            count++;
+        }
+
         Product savedProduct = productService.saveProduct(product);
+
+        String uploadDir = "./uploads/inventory/"+ savedProduct.getId();
+        Path uploadPath = Paths.get(uploadDir);
+        if(!Files.exists(uploadPath)){
+            Files.createDirectories(uploadPath);
+        }
+
+        for(MultipartFile file : multipartFiles){
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            FileUploadUtil.saveFile(uploadDir,fileName,file);
+        }
+
         ra.addFlashAttribute("message","Product Was Added Successfully.");
         return "redirect:/inventory";
     }

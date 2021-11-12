@@ -89,7 +89,7 @@
                     <h2>Add New Product</h2>
                 </div>
 
-                <form th:action="@{/inventory/save}" th:object="${product}" method="post">
+                <form th:action="@{/inventory/save}" th:object="${product}" method="post" enctype="multipart/form-data">
                     <ul>
                         <li>
                             <label for="product_name">Product Name:</label>
@@ -102,6 +102,18 @@
                         <li>
                             <label for="price">Price Per Unit:</label>
                             <input type="text" th:field="*{price}" id="price" name="price" required maxlength="6"></input>
+                        </li>
+                        <li>
+                            <label>Upload First Image:</label>
+                            <input type="file" name="image" accept="image/png, image/jpeg, image/jpg" required></input>
+                        </li>
+                        <li>
+                            <label>Upload Second Image:</label>
+                            <input type="file" name="image" accept="image/png, image/jpeg, image/jpg" required></input>
+                        </li>
+                        <li>
+                            <label>Upload Third Image:</label>
+                            <input type="file" name="image" accept="image/png, image/jpeg, image/jpg" required></input>
                         </li>
                         <li>
                             <label>Category:</label>

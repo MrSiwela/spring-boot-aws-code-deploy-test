@@ -77,8 +77,9 @@
                     </label>
                 </div>
                 <div class="user">
-                    <h2>Example User</h2>
-                    <small>normal User</small>
+                    <h2><span sec:authentication="name"></span></h2>
+                    <small sec:authorize="hasRole('ADMIN')">Admin</small>
+                    <small sec:authorize="hasRole('USER')">User</small>
                 </div>
             </div>
             <!-- Cards section -->

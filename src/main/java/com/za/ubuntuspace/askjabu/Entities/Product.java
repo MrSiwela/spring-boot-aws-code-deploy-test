@@ -14,6 +14,12 @@ public class Product {
     private String productDescription;
     @Column( nullable = false)
     private float price;
+    @Column( nullable = true, length = 45)
+    private String firstImage;
+    @Column( nullable = true, length = 45)
+    private String secondImage;
+    @Column( nullable = true, length = 45)
+    private String thirdImage;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -82,6 +88,58 @@ public class Product {
     public void setVendor(Vendor vendor) {
         this.vendor = vendor;
     }
+
+    public String getFirstImage() {
+        return firstImage;
+    }
+
+    public void setFirstImage(String firstImage) {
+        this.firstImage = firstImage;
+    }
+
+    public String getSecondImage() {
+        return secondImage;
+    }
+
+    public void setSecondImage(String secondImage) {
+        this.secondImage = secondImage;
+    }
+
+    public String getThirdImage() {
+        return thirdImage;
+    }
+
+    public void setThirdImage(String thirdImage) {
+        this.thirdImage = thirdImage;
+    }
+
+    @Transient
+    public String getFirstImagePath(){
+        if(firstImage == null || ((Integer) id) == null){
+            return null;
+        }
+
+        return "/uploads/inventory/"+id+"/"+firstImage;
+    }
+
+    @Transient
+    public String getSecondImagePath(){
+        if(secondImage == null || ((Integer) id) == null){
+            return null;
+        }
+
+        return "/uploads/inventory/"+id+"/"+secondImage;
+    }
+
+    @Transient
+    public String getThirdImagePath(){
+        if(thirdImage == null || ((Integer) id) == null){
+            return null;
+        }
+
+        return "/uploads/inventory/"+id+"/"+thirdImage;
+    }
+
 
     @Override
     public String toString() {

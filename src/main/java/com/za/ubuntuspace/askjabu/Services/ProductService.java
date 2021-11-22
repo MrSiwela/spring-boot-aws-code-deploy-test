@@ -32,4 +32,8 @@ public class ProductService {
         return deleteProduct;
     }
 
+    public List<Product> getProductsByVendorId(int id){
+        return productRepository.findAllByVendorId(id);
+    }
+
 }

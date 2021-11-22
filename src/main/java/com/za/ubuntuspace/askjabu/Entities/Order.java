@@ -16,23 +16,23 @@ public class Order {
     private String orderDate;
     @Column(nullable = false)
     private String deliveryStatus;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
     @OneToMany( targetEntity = OrderItem.class ,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn( name = "order_id",referencedColumnName = "id")
-    private Set<Product> products = new HashSet<>();
+    private List<OrderItem> orderItems;
 
     public Order() {
     }
 
-    public Order(int id, String orderDate, String deliveryStatus, Customer customer, Set<Product> products) {
+    public Order(int id, String orderDate, String deliveryStatus, Customer customer, List<OrderItem> orderItems) {
         this.id = id;
         this.orderDate = orderDate;
         this.deliveryStatus = deliveryStatus;
         this.customer = customer;
-        this.products = products;
+        this.orderItems = orderItems;
     }
 
     public int getId() {
@@ -67,12 +67,12 @@ public class Order {
         this.customer = customer;
     }
 
-    public Set<Product> getProducts() {
-        return products;
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
     }
 
-    public void setProducts(Set<Product> products) {
-        this.products = products;
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
     @Override

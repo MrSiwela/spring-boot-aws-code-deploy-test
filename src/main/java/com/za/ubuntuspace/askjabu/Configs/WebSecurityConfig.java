@@ -7,10 +7,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -42,16 +44,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/health").permitAll()
+        http
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/health","/registration/**","/password-reset/**","/orders/customer/**","/api/v1/products/**").permitAll()
                 .antMatchers("/").hasAnyAuthority("USER", "ADMIN")
+                .antMatchers("/vendors").hasAnyAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().permitAll()
+                .formLogin().loginPage("/login")
+                .usernameParameter("email")
+                .defaultSuccessUrl("/dashboard")
+                .permitAll()
                 .and()
-                .logout().permitAll()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login")
+                .permitAll()
                 .and()
                 .exceptionHandling().accessDeniedPage("/403")
         ;
+    }
+
+    public void configure(WebSecurity web) throws Exception{
+        web.ignoring().antMatchers("/images/**","/js/**","/css/**");
     }
 }

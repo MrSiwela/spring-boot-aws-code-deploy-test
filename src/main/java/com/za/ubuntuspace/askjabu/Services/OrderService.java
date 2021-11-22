@@ -31,4 +31,12 @@ public class OrderService {
         editOrder.setDeliveryStatus(order.getDeliveryStatus());
         return ordersRepository.save(editOrder);
     }
+
+    public List<Order> getOrdersByCustomerId(int id){
+        return ordersRepository.findAllByCustomerId(id);
+    }
+
+    public List<Order> getByOrderStatus(String status){
+        return ordersRepository.findAllByDeliveryStatus(status);
+    }
 }

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
     <title>Dashboard</title>
 </head>
 <body>
@@ -16,7 +16,7 @@
                 <li>
                     <a href="#">
                         <span class="icon"><ion-icon name="ellipse-outline"></ion-icon></span>
-                        <span class="title">Ask Jabu</span>
+                        <span class="title">ASK JABU</span>
                     </a>
                 </li>
                 <li class="current-page">
@@ -25,7 +25,7 @@
                         <span class="title">Dashboard</span>
                     </a>
                 </li>
-                <li>
+                <li sec:authorize="hasAnyAuthority('ADMIN')">
                     <a th:href="@{/vendors}">
                         <span class="icon"><ion-icon name="calculator-outline"></ion-icon></span>
                         <span class="title">Vendors</span>
@@ -43,7 +43,7 @@
                         <span class="title">Inventory</span>
                     </a>
                 </li>
-                <li>
+                <li sec:authorize="hasAnyAuthority('ADMIN')">
                     <a th:href="@{/categories}">
                         <span class="icon"><ion-icon name="clipboard-outline"></ion-icon></span>
                         <span class="title">Categories</span>
@@ -70,24 +70,24 @@
                 <div class="toggle">
                     <ion-icon name="menu"></ion-icon>
                 </div>
-                <div class="search">
-                    <label for="">
-                        <input type="search" placeholder="Search"/>
-                        <ion-icon name="search-outline"></ion-icon>
-                    </label>
-                </div>
+<!--                <div class="search">-->
+<!--                    <label for="">-->
+<!--                        <input type="search" placeholder="Search"/>-->
+<!--                        <ion-icon name="search-outline"></ion-icon>-->
+<!--                    </label>-->
+<!--                </div>-->
                 <div class="user">
                     <h2><span sec:authentication="name"></span></h2>
-                    <small sec:authorize="hasRole('ADMIN')">Admin</small>
-                    <small sec:authorize="hasRole('USER')">User</small>
+                    <small sec:authorize="hasAnyAuthority('ADMIN')">Admin</small>
+                    <small sec:authorize="hasAnyAuthority('USER')">User</small>
                 </div>
             </div>
             <!-- Cards section -->
             <div class="cards">
                 <div class="card">
                     <div>
-                        <div class="stats">65</div>
-                        <div class="card-name">Customers</div>
+                        <div class="stats">[[${OrdersPlaced}]]</div>
+                        <div class="card-name">New Orders</div>
                     </div>
                     <div class="icon">
                         <ion-icon name="people-outline"></ion-icon>
@@ -95,8 +95,8 @@
                 </div>
                 <div class="card">
                     <div>
-                        <div class="stats">65</div>
-                        <div class="card-name">Orders</div>
+                        <div class="stats">[[${ordersInTransit}]]</div>
+                        <div class="card-name">In-Transit</div>
                     </div>
                     <div class="icon">
                         <ion-icon name="calculator-outline"></ion-icon>
@@ -104,7 +104,7 @@
                 </div>
                 <div class="card">
                     <div>
-                        <div class="stats">65</div>
+                        <div class="stats">[[${ordersDelivered}]]</div>
                         <div class="card-name">Delivered</div>
                     </div>
                     <div class="icon">
@@ -119,7 +119,7 @@
                 <!-- Order Details -->
                 <div class="recent-orders">
                     <div class="orders-hearder">
-                        <h2>Recent Orders</h2>
+                        <h2>[[${vendor.vendorName}]] Recent Orders</h2>
                         <a th:href="@{/orders}" class="btn">View All</a>
                     </div>
                     <table>
@@ -148,26 +148,12 @@
                         <h2>Recent Customers</h2>
                     </div>
                     <table>
-                        <tr>
-                            <td><span class="customer-image"><ion-icon name="person-outline"></ion-icon></span></td>
-                            <td><h2>Username</h2><br><span>Soweto</span></td>
-                        </tr>
-                        <tr>
-                            <td><span class="customer-image"><ion-icon name="person-outline"></ion-icon></span></td>
-                            <td><h2>Username</h2><br><span>Soweto</span></td>
-                        </tr>
-                        <tr>
-                            <td><span class="customer-image"><ion-icon name="person-outline"></ion-icon></span></td>
-                            <td><h2>Username</h2><br><span>Soweto</span></td>
-                        </tr>
-                        <tr>
-                            <td><span class="customer-image"><ion-icon name="person-outline"></ion-icon></span></td>
-                            <td><h2>Username</h2><br><span>Soweto</span></td>
-                        </tr>
-                        <tr>
-                            <td><span class="customer-image"><ion-icon name="person-outline"></ion-icon></span></td>
-                            <td><h2>Username</h2><br><span>Soweto</span></td>
-                        </tr>
+                        <th:block th:each="customer : ${customers}">
+                            <tr>
+                                <td><span class="customer-image"><ion-icon name="person-outline"></ion-icon></span></td>
+                                <td><h2>[[${customer.name}]]</h2><br><span>[[${customer.email}]]</span></td>
+                            </tr>
+                        </th:block>
                     </table>
                 </div>
             </div>

@@ -1,18 +1,16 @@
 package com.za.ubuntuspace.askjabu.Controllers;
 
 import com.za.ubuntuspace.askjabu.Configs.FileUploadUtil;
-import com.za.ubuntuspace.askjabu.Entities.Category;
-import com.za.ubuntuspace.askjabu.Entities.Order;
-import com.za.ubuntuspace.askjabu.Entities.Product;
-import com.za.ubuntuspace.askjabu.Entities.Vendor;
+import com.za.ubuntuspace.askjabu.Entities.*;
+import com.za.ubuntuspace.askjabu.Repositories.CategoryRepository;
 import com.za.ubuntuspace.askjabu.Repositories.ProductRepository;
-import com.za.ubuntuspace.askjabu.Services.CategoryService;
-import com.za.ubuntuspace.askjabu.Services.OrderService;
-import com.za.ubuntuspace.askjabu.Services.ProductService;
+import com.za.ubuntuspace.askjabu.Repositories.UserRepository;
+import com.za.ubuntuspace.askjabu.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -45,12 +43,37 @@ public class ProductController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private VendorService vendorService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private CustomerService customerService;
+
     @GetMapping("/dashboard")
     public String dashboard(Model model){
+        User loggedUser = userRepository.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        Vendor userVendor = vendorService.getVendorById(loggedUser.getVendor().getId());
+        model.addAttribute("vendor",userVendor);
+
         List<Product> products = productService.getAllProdcuts();
         List<Order> orders = orderService.getAllOrders();
+        List<Customer> customers = customerService.getAllCustomers();
+
+        if(orders.size() >= 10){
+            orders = orders.subList(0,10);
+        }
+        if(customers.size() >= 5){
+            customers = customers.subList(0,5);
+        }
+
+        adminDashboardStats(model);
+
         model.addAttribute("productList",products);
         model.addAttribute("orderList",orders);
+        model.addAttribute("customers",customers);
         return "dashboard";
     }
 
@@ -58,6 +81,12 @@ public class ProductController {
     public String inventory(Model model,@RequestParam(defaultValue = "0") int page){
 //        List<Product> products = productService.getAllProdcuts();
 //        model.addAttribute("productList",products);
+
+        User loggedUser = userRepository.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        Vendor userVendor = vendorService.getVendorById(loggedUser.getVendor().getId());
+        model.addAttribute("vendor",userVendor);
+        model.addAttribute("vendorProducts",productService.getProductsByVendorId(userVendor.getId()));
+
         model.addAttribute("productList",repository.findAll(PageRequest.of(page,6)));
         model.addAttribute("product",new Product());
         return "inventory";
@@ -74,21 +103,8 @@ public class ProductController {
     @PostMapping("/inventory/save")
     public String saveProduct(Product product, @RequestParam("image")MultipartFile[] multipartFiles, RedirectAttributes ra) throws IOException {
 
-//        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-//        product.setFirstImage(fileName);
-//
-//        Product savedProduct = productService.saveProduct(product);
-//
-//        String uploadDir = "./uploads/inventory/"+ savedProduct.getId();
-//        Path uploadPath = Paths.get(uploadDir);
-//        if(!Files.exists(uploadPath)){
-//            Files.createDirectories(uploadPath);
-//        }
-//        InputStream inputStream = file.getInputStream();
-//        Path filePath = uploadPath.resolve(fileName);
-//        Files.copy(inputStream,filePath,StandardCopyOption.REPLACE_EXISTING);
-//        ra.addFlashAttribute("message","Product Was Added Successfully.");
-//        return "redirect:/inventory";
+        User loggedUser = userRepository.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        product.setVendor(loggedUser.getVendor());
 
         int count = 0;
         for( MultipartFile file: multipartFiles){
@@ -120,7 +136,7 @@ public class ProductController {
     public String editProduct(Product product, RedirectAttributes ra){
         System.out.println(product.toString());
         productService.saveProduct(product);
-        ra.addFlashAttribute("message","Product Was Added Successfully.");
+        ra.addFlashAttribute("message","Changes Saved Successfully.");
         return "redirect:/inventory";
     }
 
@@ -147,7 +163,7 @@ public class ProductController {
     }
 
     @GetMapping("/settings")
-    public String settings(Model model){
+    public String settingsPage(Model model){
         model.addAttribute("settings",new Vendor());
         return "settings";
     }
@@ -186,6 +202,16 @@ public class ProductController {
     @GetMapping("/test")
     public String testing(){
         return "Test Successful";
+    }
+
+    public void adminDashboardStats(Model model){
+        int ordersPlaced = orderService.getByOrderStatus("order-placed").size();
+        int ordersInTransit = orderService.getByOrderStatus("in-transit").size();
+        int ordersDelivered = orderService.getByOrderStatus("delivered").size();
+
+        model.addAttribute("OrdersPlaced",ordersPlaced);
+        model.addAttribute("ordersInTransit",ordersInTransit);
+        model.addAttribute("ordersDelivered",ordersDelivered);
     }
 
 }

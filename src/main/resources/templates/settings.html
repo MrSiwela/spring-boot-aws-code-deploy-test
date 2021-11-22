@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-    <link rel="stylesheet" th:href="@{/settings.css}">
+    <link rel="stylesheet" th:href="@{/css/settings.css}">
     <title>Settings</title>
 </head>
 <body>
@@ -25,7 +25,7 @@
                     <span class="title">Dashboard</span>
                 </a>
             </li>
-            <li>
+            <li sec:authorize="hasAnyAuthority('ADMIN')">
                 <a th:href="@{/vendors}">
                     <span class="icon"><ion-icon name="calculator-outline"></ion-icon></span>
                     <span class="title">Vendors</span>
@@ -43,7 +43,7 @@
                     <span class="title">Inventory</span>
                 </a>
             </li>
-            <li>
+            <li sec:authorize="hasAnyAuthority('ADMIN')">
                 <a th:href="@{/categories}">
                     <span class="icon"><ion-icon name="clipboard-outline"></ion-icon></span>
                     <span class="title">Categories</span>
@@ -70,15 +70,16 @@
             <div class="toggle">
                 <ion-icon name="menu"></ion-icon>
             </div>
-            <div class="search">
-                <label for="">
-                    <input type="search" placeholder="Search"/>
-                    <ion-icon name="search-outline"></ion-icon>
-                </label>
-            </div>
+<!--            <div class="search">-->
+<!--                <label for="">-->
+<!--                    <input type="search" placeholder="Search"/>-->
+<!--                    <ion-icon name="search-outline"></ion-icon>-->
+<!--                </label>-->
+<!--            </div>-->
             <div class="user">
-                <h2>Example User</h2>
-                <small>normal User</small>
+                <h2><span sec:authentication="name"></span></h2>
+                <small sec:authorize="hasRole('ADMIN')">Admin</small>
+                <small sec:authorize="hasRole('USER')">User</small>
             </div>
         </div>
         <!-- Cards section -->

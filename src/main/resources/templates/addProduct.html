@@ -77,8 +77,8 @@
             </div>
             <div class="user">
                 <h2><span sec:authentication="name"></span></h2>
-                <small sec:authorize="hasRole('ADMIN')">Admin</small>
-                <small sec:authorize="hasRole('USER')">User</small>
+                <small sec:authorize="hasAnyAuthority('ADMIN')">Admin</small>
+                <small sec:authorize="hasAnyAuthority('USER')">User</small>
             </div>
         </div>
         <!-- Cards section -->
@@ -103,6 +103,10 @@
                         <li>
                             <label for="price">Price Per Unit:</label>
                             <input type="text" th:field="*{price}" id="price" name="price" required maxlength="6"></input>
+                        </li>
+                        <li>
+                            <br>
+                            <small>For better integration with the user application use images with the dimension 500 X 720 pixels</small>
                         </li>
                         <li>
                             <label>Upload First Image:</label>

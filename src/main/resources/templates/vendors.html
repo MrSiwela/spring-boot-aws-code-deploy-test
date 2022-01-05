@@ -78,18 +78,47 @@
             </div>
             <div class="user">
                 <h2><span sec:authentication="name"></span></h2>
-                <small sec:authorize="hasRole('ADMIN')">Admin</small>
-                <small sec:authorize="hasRole('USER')">User</small>
+                <small sec:authorize="hasAnyAuthority('ADMIN')">Admin</small>
+                <small sec:authorize="hasAnyAuthority('USER')">User</small>
             </div>
         </div>
 
         <!-- Summarized Details -->
         <div class="details">
+
+            <!-- Disabled Users -->
+            <div th:if="${disabledUsers}" class="recent-orders">
+                <div class="orders-hearder">
+                    <h2>Enable Users</h2>
+                </div>
+                <div class="cards" >
+                    <table>
+                        <tbody>
+                        <th:block th:each="disabledUser : ${disabledUsers}">
+                            <form th:action="@{'/vendors/user/enable/'+ ${disabledUser.email}}" method="post">
+                                <div class="card" style="height: 100px;">
+                                    <h1>[[${disabledUser.fullName}]]</h1>
+                                    <p>[[${disabledUser.vendor.vendorName}]]</p>
+                                    <div class="user-card-bottom">
+                                        <div class="card-button">
+                                            <button style="height: 30px;" type="submit">Enable</button>
+<!--                                            <a class="edit-btn" th:href="@{'/vendors/user/enable/'+ ${disabledUser.email}}" ><ion-icon name="pencil-outline"></ion-icon>Enable</a>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
             <!-- Order Details -->
             <div class="recent-orders">
                 <div class="orders-hearder">
                     <h2>Vendors</h2>
-                    <button id="newProductBtn" class="btn" onclick="window.location.href='/vendors/new'">Add New</button>
+                    <button id="newProductBtn" class="btn" onclick="window.location.href='/vendors/new'"><ion-icon name="pencil-outline"></ion-icon>Add New</button>
                 </div>
                 <div class="cards">
                     <table>
@@ -110,7 +139,7 @@
                                     <div class="card-button">
                                         <!--                                    <button class="edit-btn"><ion-icon name="pencil-outline"></ion-icon></button>-->
                                         <!--                                    <button class="delete-btn"><ion-icon name="trash-outline"></ion-icon></button>-->
-                                        <a id="edit-btn" class="edit-btn" th:href="@{'/vendors/edit/'+ ${vendor.id}}" ><ion-icon name="pencil-outline"></ion-icon>View</a>
+                                        <a id="edit-btn" class="edit-btn" th:href="@{'/vendors/edit/'+ ${vendor.id}}" >View</a>
                                     </div>
                                 </div>
                             </div>

@@ -30,4 +30,8 @@ public class VendorService {
         vendorRepository.delete(deleteVendor);
         return deleteVendor;
     }
+
+    public List<Vendor> searchVendors(String searchTerm){
+        return vendorRepository.findByVendorNameLike(searchTerm);
+    }
 }

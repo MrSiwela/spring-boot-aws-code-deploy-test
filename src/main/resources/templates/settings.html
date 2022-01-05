@@ -70,20 +70,20 @@
             <div class="toggle">
                 <ion-icon name="menu"></ion-icon>
             </div>
-<!--            <div class="search">-->
-<!--                <label for="">-->
-<!--                    <input type="search" placeholder="Search"/>-->
-<!--                    <ion-icon name="search-outline"></ion-icon>-->
-<!--                </label>-->
-<!--            </div>-->
+            <!--            <div class="search">-->
+            <!--                <label for="">-->
+            <!--                    <input type="search" placeholder="Search"/>-->
+            <!--                    <ion-icon name="search-outline"></ion-icon>-->
+            <!--                </label>-->
+            <!--            </div>-->
             <div class="user">
                 <h2><span sec:authentication="name"></span></h2>
-                <small sec:authorize="hasRole('ADMIN')">Admin</small>
-                <small sec:authorize="hasRole('USER')">User</small>
+                <small sec:authorize="hasAnyAuthority('ADMIN')">Admin</small>
+                <small sec:authorize="hasAnyAuthority('USER')">User</small>
             </div>
         </div>
         <!-- Cards section -->
-        <div class="cards">
+        <div sec:authorize="hasAnyAuthority('USER')" class="cards">
             <div class="card active" id="card_1">
                 <div>
                     <div class="stats">Vendor Info</div>
@@ -111,15 +111,36 @@
 
         </div>
 
+        <div sec:authorize="hasAnyAuthority('ADMIN')" class="cards">
+            <div class="card active">
+                <div>
+                    <div class="stats">Notifications</div>
+                </div>
+                <div class="icon">
+                    <ion-icon name="mail-unread-outline"></ion-icon>
+                </div>
+            </div>
+            <div class="card">
+                <div>
+                    <div class="stats">Credentials</div>
+                </div>
+                <div class="icon">
+                    <ion-icon name="lock-open-outline"></ion-icon>
+                </div>
+            </div>
+
+        </div>
+
         <!-- Summarized Details -->
-        <div class="settings-div">
+        <div  class="settings-div">
             <!-- Order Details -->
-            <div class="settings" style="display: grid">
+            <div sec:authorize="hasAnyAuthority('USER')" class="settings" style="display: grid">
                 <div class="setting-header">
                     <h2>Vendor Information</h2>
                     <a href="#" class="btn">Edit</a>
                 </div>
-                <form th:action="@{/settings/save}" th:object="${settings}" method="post">
+                <form th:action="@{/settings/vendor-settings}" th:object="${vendor}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" th:field="*{id}"/>
                     <ul>
                         <li>
                             <label for="vendor_name">Vendor Name:</label>
@@ -131,21 +152,22 @@
                         </li>
                         <li>
                             <label for="operating_hours">Setting_2:</label>
-                            <input th:field="*{operatingHours}" id="operating_hours2" name="operating_hours" required minlength="2" maxlength="200"></input>
+                            <input th:field="*{sector}" id="operating_hours2" name="operating_hours" required minlength="2" maxlength="200"></input>
                         </li>
                         <li>
-                            <label for="operating_hours">Setting_3:</label>
-                            <input th:field="*{operatingHours}" id="operating_hours3" name="operating_hours" required minlength="2" maxlength="200"></input>
+                            <label>Vendor Image:</label>
+                            <img width="150" height="150" th:src="@{${vendor.vendorImagePath}}"/>
+                            <input type="file" name="image" required accept="image/png, image/jpeg, image/jpg">
                         </li>
 
                         <!--                        &lt;!&ndash;                    <li>&ndash;&gt;-->
-<!--                        &lt;!&ndash;                        <label for="sizes">Sizes:</label>&ndash;&gt;-->
-<!--                        &lt;!&ndash;                        <input type="text" id="sizes" name="sizes">&ndash;&gt;-->
-<!--                        &lt;!&ndash;                    </li>&ndash;&gt;-->
-<!--                        &lt;!&ndash;                    <li>&ndash;&gt;-->
-<!--                        &lt;!&ndash;                        <label for="colors">Colors:</label>&ndash;&gt;-->
-<!--                        &lt;!&ndash;                        <input type="text" id="colors" name="colors">&ndash;&gt;-->
-<!--                        &lt;!&ndash;                    </li>&ndash;&gt;-->
+                        <!--                        &lt;!&ndash;                        <label for="sizes">Sizes:</label>&ndash;&gt;-->
+                        <!--                        &lt;!&ndash;                        <input type="text" id="sizes" name="sizes">&ndash;&gt;-->
+                        <!--                        &lt;!&ndash;                    </li>&ndash;&gt;-->
+                        <!--                        &lt;!&ndash;                    <li>&ndash;&gt;-->
+                        <!--                        &lt;!&ndash;                        <label for="colors">Colors:</label>&ndash;&gt;-->
+                        <!--                        &lt;!&ndash;                        <input type="text" id="colors" name="colors">&ndash;&gt;-->
+                        <!--                        &lt;!&ndash;                    </li>&ndash;&gt;-->
                         <li class="form-btn">
                             <button type="submit">Save Changes</button>
                         </li>
@@ -154,7 +176,7 @@
             </div>
 
             <!-- Notification Settings -->
-            <div class="settings">
+            <div sec:authorize="hasAnyAuthority('USER','ADMIN')"  class="settings">
                 <div class="notification-settings">
                     <ul>
                         <li>
@@ -189,19 +211,23 @@
             </div>
 
             <!-- Password Settings -->
-            <div class="settings">
+            <div sec:authorize="hasAnyAuthority('USER','ADMIN')" class="settings">
+
                 <div class="setting-header">
                     <h2>Password Reset</h2>
                 </div>
-                <form th:action="@{/settings/save}" th:object="${settings}" method="post">
+                <form th:action="@{/settings/password-reset}" th:object="${resetUser}" method="post">
                     <ul>
+                        <li th:if="${errorMessage}">
+                            <h3>[[${errorMessage}]]</h3>
+                        </li>
                         <li>
                             <label for="oldPassword">Old Password:</label>
-                            <input type="text"  th:field="*{vendorName}" id="oldPassword" name="oldPassword" required minlength="8">
+                            <input type="text"  th:field="*{oldPassword}" id="oldPassword" name="oldPassword" required minlength="8">
                         </li>
                         <li>
                             <label for="newPassword">New Password:</label>
-                            <input th:field="*{operatingHours}" id="newPassword" name="newPassword" required minlength="8"></input>
+                            <input th:field="*{newPassword}" id="newPassword" name="newPassword" required minlength="8"></input>
                         </li>
                         <li class="form-btn">
                             <button type="submit">Reset</button>

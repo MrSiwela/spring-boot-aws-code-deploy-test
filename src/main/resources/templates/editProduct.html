@@ -77,8 +77,8 @@
             </div>
             <div class="user">
                 <h2><span sec:authentication="name"></span></h2>
-                <small sec:authorize="hasRole('ADMIN')">Admin</small>
-                <small sec:authorize="hasRole('USER')">User</small>
+                <small sec:authorize="hasAnyAuthority('ADMIN')">Admin</small>
+                <small sec:authorize="hasAnyAuthority('USER')">User</small>
             </div>
         </div>
         <!-- Cards section -->
@@ -112,6 +112,18 @@
                                     <option th:text="${category.categoryName}" th:value="${category.id}"></option>
                                 </th:block>
                             </select>
+                        </li>
+                        <li>
+                            <input type="hidden" th:field="*{vendor}"></input>
+                        </li>
+                        <li>
+                            <input type="hidden" th:field="*{firstImage}"></input>
+                        </li>
+                        <li>
+                            <input type="hidden" th:field="*{secondImage}"></input>
+                        </li>
+                        <li>
+                            <input type="hidden" th:field="*{thirdImage}"></input>
                         </li>
                         <li class="form-btn">
                             <button type="submit">Save Changes</button>

@@ -3,6 +3,7 @@ package com.za.ubuntuspace.askjabu.Services;
 import com.za.ubuntuspace.askjabu.Entities.MyUserDetails;
 import com.za.ubuntuspace.askjabu.Entities.User;
 import com.za.ubuntuspace.askjabu.Repositories.UserRepository;
+import com.za.ubuntuspace.askjabu.Repositories.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

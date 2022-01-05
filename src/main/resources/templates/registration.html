@@ -34,6 +34,14 @@
                         <input type="email" th:field="*{email}" id="email" name="email" required></input>
                     </li>
                     <li>
+                        <label>Vendor:</label>
+                        <select th:field="*{vendorId}" required>
+                            <th:block th:each="vendor : ${vendorList}">
+                                <option th:text="${vendor.vendorName}" th:value="${vendor.id}"></option>
+                            </th:block>
+                        </select>
+                    </li>
+                    <li>
                         <label for="password">Password:</label>
                         <input type="password" th:field="*{password}" id="password" name="password" required minlength="8"></input>
                     </li>

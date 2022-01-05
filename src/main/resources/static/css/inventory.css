@@ -143,8 +143,8 @@ body{
 
 .toggle{
     position: relative;
-    top: 10px;
-    width: 60px;
+    top: 15px;
+    width: 90px;
     height: 60px;
     justify-content: space-between;
     align-items: center;
@@ -236,6 +236,12 @@ body{
         display: flex;
         align-self: end;
         margin-top: 20px;
+}
+
+.recent-orders .card .user-card-bottom   {
+        display: flex;
+        align-self: center;
+        margin-top: 15px;
 }
 
 .recent-orders .card .card-button  {
@@ -341,6 +347,15 @@ body{
 .status.packaging{
     padding: 2px 4px;
     background: #f9ca3f;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.status.order-placed{
+    padding: 2px 4px;
+    background: #9417ce;
     color: #fff;
     border-radius: 4px;
     font-size: 14px;
@@ -740,6 +755,10 @@ button{
          font-size: 1.25rem;
          margin-top: 10px;
      }
+     .recent-orders .card .user-card-bottom   {
+             margin-top: 0px;
+     }
+
 
 
 }

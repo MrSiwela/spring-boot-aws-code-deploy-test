@@ -13,4 +13,6 @@ public interface UserRepository extends CrudRepository<User,Long> {
     public User getUserByEmail(@Param("email") String email);
 
     public List<User> findAllByVendorId(int id);
+
+    public List<User> findAllByEnabled(boolean isEnabled);
 }

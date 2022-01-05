@@ -78,8 +78,8 @@
             </div>
             <div class="user">
                 <h2><span sec:authentication="name"></span></h2>
-                <small sec:authorize="hasRole('ADMIN')">Admin</small>
-                <small sec:authorize="hasRole('USER')">User</small>
+                <small sec:authorize="hasAnyAuthority('ADMIN')">Admin</small>
+                <small sec:authorize="hasAnyAuthority('USER')">User</small>
             </div>
         </div>
         <!-- Cards section -->

@@ -2,9 +2,11 @@ package com.za.ubuntuspace.askjabu.Controllers;
 
 import com.za.ubuntuspace.askjabu.Entities.RegistrationRequest;
 import com.za.ubuntuspace.askjabu.Entities.User;
+import com.za.ubuntuspace.askjabu.Entities.Vendor;
 import com.za.ubuntuspace.askjabu.Repositories.UserRepository;
 import com.za.ubuntuspace.askjabu.Services.RegistrationService;
 import com.za.ubuntuspace.askjabu.Services.UserDetailsServiceImpl;
+import com.za.ubuntuspace.askjabu.Services.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,6 +17,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+
 @Controller
 public class UserRegistrationController {
 
@@ -24,10 +28,15 @@ public class UserRegistrationController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private VendorService vendorService;
+
     @GetMapping("/registration")
     public String registrationPage(Model model){
         RegistrationRequest registerUser = new RegistrationRequest();
+        List<Vendor> vendors = vendorService.getAllVendors();
         model.addAttribute("registerUser",registerUser);
+        model.addAttribute("vendorList",vendors);
         return "registration";
     }
 
@@ -58,7 +67,7 @@ public class UserRegistrationController {
     @PostMapping("/password-reset/reset")
     public String resetUserPassword(User user){
         User resetUser = userRepository.getUserByEmail(user.getEmail());
-        userRepository.save(registrationService.encodeUserPassword(resetUser));
+        userRepository.save(registrationService.encodeUserPassword(resetUser,resetUser.getEmail()));
         return "redirect:/login";
     }
 

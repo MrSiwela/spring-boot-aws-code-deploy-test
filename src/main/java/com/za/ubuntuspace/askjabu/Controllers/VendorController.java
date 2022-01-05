@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -33,7 +34,9 @@ public class VendorController {
     @GetMapping("/vendors")
     public String vendorPage(Model model){
         List<Vendor> vendorList = vendorService.getAllVendors();
+        List<User> disabledUsers = userRepository.findAllByEnabled(false);
         model.addAttribute("vendorList",vendorList);
+        model.addAttribute("disabledUsers",disabledUsers);
         return "vendors";
     }
 
@@ -47,7 +50,8 @@ public class VendorController {
     public String saveVendor(Vendor vendor, Model model, @RequestParam("image")MultipartFile multipartFile) throws IOException {
 
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        vendor.setVendorImage(fileName);
+//        vendor.setVendorImage(fileName);
+        if(!multipartFile.isEmpty()) vendor.setVendorImage(fileName);
         Vendor savedVendor = vendorService.newVendor(vendor);
 
         String uploadDir = "./uploads/vendors/"+ savedVendor.getId();
@@ -55,7 +59,9 @@ public class VendorController {
         if(!Files.exists(uploadPath)){
             Files.createDirectories(uploadPath);
         }
-        FileUploadUtil.saveFile(uploadDir,fileName,multipartFile);
+        if(vendor.getVendorImagePath().isEmpty()){
+            FileUploadUtil.saveFile(uploadDir,fileName,multipartFile);
+        }
 
         return "redirect:/vendors";
     }
@@ -74,5 +80,23 @@ public class VendorController {
         Vendor deletedVendor = vendorService.deleteVendor(id);
         model.addAttribute("deletedVendor",deletedVendor);
         return "redirect:/vendors";
+    }
+
+    @PostMapping("/vendors/user/enable/{email}")
+    public String enableUser(@PathVariable("email") String email,Model model){
+        User user = userRepository.getUserByEmail(email);
+        user.setEnabled(true);
+        userRepository.save(user);
+        List<Vendor> vendors = vendorService.searchVendors("%Test%");
+        System.out.println(vendors.size());
+        return  "redirect:/vendors";
+    }
+
+    @PostMapping("/vendors/search/{search}")
+    public String searchVendors(@PathVariable("search") String search, Model model, RedirectAttributes ra){
+        List<Vendor> vendors = vendorService.searchVendors("%"+search+"%");
+        ra.addAttribute("vendorList",vendors);
+        model.addAttribute(ra);
+        return  "redirect:/vendors";
     }
 }

@@ -5,12 +5,12 @@ public class RegistrationRequest {
     private String fullName;
     private String email;
     private String password;
-    private String vendorId;
+    private int vendorId;
 
     public RegistrationRequest() {
     }
 
-    public RegistrationRequest(String fullName, String email, String password, String vendorId) {
+    public RegistrationRequest(String fullName, String email, String password, int vendorId) {
         this.fullName = fullName;
         this.email = email;
         this.password = password;
@@ -41,11 +41,11 @@ public class RegistrationRequest {
         this.password = password;
     }
 
-    public String getVendorId() {
+    public int getVendorId() {
         return vendorId;
     }
 
-    public void setVendorId(String vendorId) {
+    public void setVendorId(int vendorId) {
         this.vendorId = vendorId;
     }
 }

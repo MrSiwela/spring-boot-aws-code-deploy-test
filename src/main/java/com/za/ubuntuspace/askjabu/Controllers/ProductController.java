@@ -52,30 +52,6 @@ public class ProductController {
     @Autowired
     private CustomerService customerService;
 
-    @GetMapping("/dashboard")
-    public String dashboard(Model model){
-        User loggedUser = userRepository.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-        Vendor userVendor = vendorService.getVendorById(loggedUser.getVendor().getId());
-        model.addAttribute("vendor",userVendor);
-
-        List<Product> products = productService.getAllProdcuts();
-        List<Order> orders = orderService.getAllOrders();
-        List<Customer> customers = customerService.getAllCustomers();
-
-        if(orders.size() >= 10){
-            orders = orders.subList(0,10);
-        }
-        if(customers.size() >= 5){
-            customers = customers.subList(0,5);
-        }
-
-        adminDashboardStats(model);
-
-        model.addAttribute("productList",products);
-        model.addAttribute("orderList",orders);
-        model.addAttribute("customers",customers);
-        return "dashboard";
-    }
 
     @GetMapping("/inventory")
     public String inventory(Model model,@RequestParam(defaultValue = "0") int page){
@@ -162,12 +138,6 @@ public class ProductController {
 
     }
 
-    @GetMapping("/settings")
-    public String settingsPage(Model model){
-        model.addAttribute("settings",new Vendor());
-        return "settings";
-    }
-
 
     @GetMapping("/api/v1/products/all")
     public ResponseEntity<List<Product>> getAllProducts(){
@@ -204,14 +174,5 @@ public class ProductController {
         return "Test Successful";
     }
 
-    public void adminDashboardStats(Model model){
-        int ordersPlaced = orderService.getByOrderStatus("order-placed").size();
-        int ordersInTransit = orderService.getByOrderStatus("in-transit").size();
-        int ordersDelivered = orderService.getByOrderStatus("delivered").size();
-
-        model.addAttribute("OrdersPlaced",ordersPlaced);
-        model.addAttribute("ordersInTransit",ordersInTransit);
-        model.addAttribute("ordersDelivered",ordersDelivered);
-    }
 
 }

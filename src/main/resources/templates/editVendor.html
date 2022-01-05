@@ -77,8 +77,8 @@
             </div>
             <div class="user">
                 <h2><span sec:authentication="name"></span></h2>
-                <small sec:authorize="hasRole('ADMIN')">Admin</small>
-                <small sec:authorize="hasRole('USER')">User</small>
+                <small sec:authorize="hasAnyAuthority('ADMIN')">Admin</small>
+                <small sec:authorize="hasAnyAuthority('USER')">User</small>
             </div>
         </div>
         <!-- Cards section -->
@@ -90,8 +90,9 @@
                     <h2>Edit Vendor</h2>
                 </div>
 
-                <form th:action="@{/vendors/save}" th:object="${editVendor}" method="post">
+                <form th:action="@{/vendors/save}" th:object="${editVendor}" method="post" enctype="multipart/form-data">
                     <input type="hidden" th:field="*{id}"/>
+                    <input type="hidden" name="image" th:field="*{vendorImage}"/>
                     <ul>
                         <li>
                             <img width="150" height="150" th:src="@{${editVendor.vendorImagePath}}"/>
@@ -107,6 +108,10 @@
                         <li>
                             <label for="operatingHours">Operating Hours:</label>
                             <input type="text"  th:field="*{operatingHours}" id="operatingHours" name="operatingHours" required minlength="2" maxlength="45">
+                        </li>
+                        <li>
+                            <label>Update Vendor Image:</label>
+                            <input type="file" name="image" accept="image/png, image/jpeg, image/jpg">
                         </li>
                         <li class="form-btn">
                             <button type="submit">Save Changes</button>

@@ -92,7 +92,7 @@
 
                 <form th:action="@{/vendors/save}" th:object="${editVendor}" method="post" enctype="multipart/form-data">
                     <input type="hidden" th:field="*{id}"/>
-                    <input type="hidden" name="image" th:field="*{vendorImage}"/>
+
                     <ul>
                         <li>
                             <img width="150" height="150" th:src="@{${editVendor.vendorImagePath}}"/>
@@ -115,7 +115,7 @@
                         </li>
                         <li class="form-btn">
                             <button type="submit">Save Changes</button>
-                            <a class="cancel-btn btn" th:href="@{'/inventory/delete/'+${editVendor.id}}">Delete</a>
+                            <a class="cancel-btn btn" th:href="@{'/vendors/delete/'+${editVendor.id}}">Delete</a>
                         </li>
                     </ul>
                 </form>

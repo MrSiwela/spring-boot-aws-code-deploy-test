@@ -51,17 +51,20 @@ public class VendorController {
 
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 //        vendor.setVendorImage(fileName);
+
         if(!multipartFile.isEmpty()) vendor.setVendorImage(fileName);
         Vendor savedVendor = vendorService.newVendor(vendor);
+
+        System.out.println(vendor.getVendorImage());
+
 
         String uploadDir = "./uploads/vendors/"+ savedVendor.getId();
         Path uploadPath = Paths.get(uploadDir);
         if(!Files.exists(uploadPath)){
             Files.createDirectories(uploadPath);
         }
-        if(vendor.getVendorImagePath().isEmpty()){
-            FileUploadUtil.saveFile(uploadDir,fileName,multipartFile);
-        }
+        FileUploadUtil.saveFile(uploadDir,fileName,multipartFile);
+
 
         return "redirect:/vendors";
     }
